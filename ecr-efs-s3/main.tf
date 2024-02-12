@@ -20,6 +20,7 @@ resource "aws_efs_file_system" "eks-efs" {
   creation_token   = "efs"
   performance_mode = "generalPurpose"
   throughput_mode  = "bursting"
+  encrypted = "true"
   tags = {
     Name = "eks-efs"
   }
