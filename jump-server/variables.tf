@@ -10,6 +10,10 @@ variable "jump_key_name" {
  description = "key for jump-server" 
 }
 
-variable "subnet_id" {
+variable "jump_subnet_id" {
  description = "subnet id for jump-server" 
+}
+
+variable "jump_vpc_id" {
+  description = "vpc id for jump-server" 
 }
