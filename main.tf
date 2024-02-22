@@ -1,6 +1,6 @@
 module "eks_vpc" {
   source = "./vpc"
-  eks_vpc_name = "EKS_VPC"
+  eks_vpc_name = "test"
   eks_vpc_cidr = "10.0.0.0/16"
   eks_vpc_public_sub_1_cidr = "10.0.1.0/24"
   eks_vpc_public_subnet_1_az = "ap-south-1a"
@@ -21,15 +21,21 @@ module "jump-server" {
 }
 module "eks" {
   source             = "./eks"
-  subnet_ids         = [module.eks_vpc.private_subnet_ids[0], module.eks_vpc.private_subnet_ids[1]]
-  vpc_id             = module.eks_vpc.vpc_id
-  cluster_name   = "my_eks_cluster"
-  cluster_version = "1.28"
-  node_group_name = "worker-node"
-  workernode_instance_type = ["t2.micro"]
-  workernode_min_size = 1
-  workernode_max_size = 2
-  workernode_desired_size = 2
+  master_subnet_ids = [module.eks_vpc.public_subnet_ids[0],module.eks_vpc.private_subnet_ids[1]]
+  worker_subnet_ids = [module.eks_vpc.private_subnet_ids[0],module.eks_vpc.private_subnet_ids[1]]
+  eks_version = "1.28"
+  vpc_id = module.eks_vpc.vpc_id
+  eks_master_role = "eks_master_role"
+  eks_worker_role = "eks_worker_role"
+  eks_autoscale_role = "eks_autoscaler_role"
+  eks_ebs_role = "eks_ebs_role"
+  eks_cluster_name = "my_eks_cluster"
+  ng_capacity_type = "ON_DEMAND"
+  ng_disk_size = "10"
+  ng_instance_types = ["t2.micro"]
+  ng_desired_size = 1
+  ng_min_size = 1
+  ng_max_size = 2
 }
 
 module "ecs-efs-s3" {
