@@ -1,6 +1,7 @@
 # vpc region
 variable "region" {
-  default = "ap-south-1"
+  default = "us-east-1"
 }
+
 
 
